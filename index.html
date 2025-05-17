@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Love Letter Envelope</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- Romantic & Readable Font -->
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #fff;
+      --bg-color: #05353d;
+      --envelope-color: #f5edd1;
+      --envelope-tab: #ecdeb8;
+      --envelope-cover: #e6cfa7;
+      --shadow: rgba(0, 0, 0, 0.2);
+      --text-color: #444;
+      --heart-color: #fc08e7;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background: var(--bg-color);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      overflow: hidden;
+      font-family: 'Playfair Display', serif;
+    }
+
+    .container {
+      position: relative;
+      width: 300px;
+      height: 230px;
+    }
+
+    .envelope-wrapper {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      background: var(--envelope-color);
+      box-shadow: 0 0 40px var(--shadow);
+      transition: all 0.5s ease-in-out;
+    }
+
+    .envelope {
+      position: relative;
+      width: 100%;
+      height: 100%;
+    }
+
+    .envelope::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 0;
+      height: 0;
+      border-top: 130px solid var(--envelope-tab);
+      border-left: 150px solid transparent;
+      border-right: 150px solid transparent;
+      z-index: 2;
+      transform-origin: top;
+      transition: transform 0.5s ease-in-out;
+    }
+
+    .envelope::after {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 0;
+      height: 0;
+      border-top: 130px solid transparent;
+      border-left: 150px solid var(--envelope-cover);
+      border-right: 150px solid var(--envelope-cover);
+      border-bottom: 100px solid var(--envelope-cover);
+      z-index: 1;
+    }
+
+    .letter {
+      position: absolute;
+      top: 100%;
+      left: 18%;
+      width: 64%;
+      height: 100%;
+      background: var(--primary);
+      text-align: center;
+      transition: transform 0.5s ease-in-out, opacity 0.5s ease-in-out;
+      box-shadow: 0 0 5px var(--shadow);
+      padding: 45px 20px 30px;
+      overflow-y: auto;
+      opacity: 0;
+      transform: translateY(0);
+      z-index: 3;
+      color: var(--text-color);
+      font-size: 15px;
+      line-height: 1.6;
+    }
+
+    .heart {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 20px;
+      height: 20px;
+      background: var(--heart-color);
+      z-index: 4;
+      transform: translate(-50%, -50%) rotate(45deg);
+      transition: opacity 0.3s ease-in-out;
+      box-shadow: 0 1px 6px var(--shadow);
+      cursor: pointer;
+    }
+
+    .heart:before,
+    .heart:after {
+      content: "";
+      position: absolute;
+      width: 20px;
+      height: 20px;
+      background-color: var(--heart-color);
+      border-radius: 50%;
+    }
+
+    .heart:before {
+      top: -10px;
+      left: 0;
+    }
+
+    .heart:after {
+      top: 0;
+      left: -10px;
+    }
+
+    .flap .envelope::before {
+      transform: rotateX(180deg);
+      z-index: 0;
+    }
+
+    .flap .letter {
+      transform: translateY(-100%);
+      opacity: 1;
+    }
+
+    .flap .heart {
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    @media (max-width: 500px) {
+      .container {
+        width: 240px;
+        height: 190px;
+      }
+
+      .envelope::before {
+        border-top: 100px solid var(--envelope-tab);
+        border-left: 120px solid transparent;
+        border-right: 120px solid transparent;
+      }
+
+      .envelope::after {
+        border-top: 100px solid transparent;
+        border-left: 120px solid var(--envelope-cover);
+        border-right: 120px solid var(--envelope-cover);
+        border-bottom: 90px solid var(--envelope-cover);
+      }
+
+      .letter {
+        padding: 40px 15px 20px;
+        font-size: 14px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="envelope-wrapper" id="envelopeWrapper">
+      <div class="envelope">
+        <div class="letter" id="letter">
+          <p><strong>Hi Love, Happy Anniversary.</strong></p>
+          <p>Can you believe it's been a year? From one DM to our late-night calls, laughter, tears, and fights we've been through so much. It wasn't always perfect, but it was always real.</p>
+          <p>Thank you for your patience, love and for staying with me even when things got tough. You've taught me so much, and I'm grateful every day that I get to call you mine.</p>
+          <p>One year down, more to go. I love you Always.</p>
+        </div>
+        <div class="heart" id="heart"></div>
+      </div>
+    </div>
+  </div>
+
+<!-- Background Music -->
+  <audio id="bg-music" loop>
+    <source src="https://www.bensound.com/bensound-music/bensound-love.mp3" type="audio/mp3">
+    Your browser does not support the audio element.
+  </audio>
+
+  <script>
+    const heart = document.getElementById('heart');
+    const envelopeWrapper = document.getElementById('envelopeWrapper');
+    const bgMusic = document.getElementById('bg-music');
+
+    heart.addEventListener('click', () => {
+      envelopeWrapper.classList.toggle('flap');
+      if (envelopeWrapper.classList.contains('flap')) {
+        bgMusic.play().catch(e => console.log("Music play error:", e));
+      } else {
+        bgMusic.pause();
+        bgMusic.currentTime = 0;
+      }
+    });
+  </script>
+</body>
+</html>
